@@ -386,7 +386,7 @@
           p: "Una variable creada dentro de una función es <b>local</b>: solo existe mientras la función corre. Las variables de fuera se pueden leer, pero asignarlas dentro crea una variable local nueva.",
           c: 'x = 10\n\ndef cambiar():\n    x = 99\n    print("dentro:", x)\n\ncambiar()\nprint("fuera:", x)',
           o: "dentro: 99\nfuera: 10",
-          n: "Para evitar efectos ocultos, pasa datos con parámetros y devuélvelos con return en lugar de usar <code class='i'>global</code>.",
+          n: "Para evitar efectos ocultos, pasa datos con parámetros y devuélvelos con return.",
           q: {
             q: "¿Qué pasa al hacer print(y) fuera?\n\ndef f():\n    y = 1\nf()\nprint(y)",
             o: ["1", "None", "NameError"],
