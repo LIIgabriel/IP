@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Funciones en Python</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #eef3f6;
+        --panel: #fff;
+        --ink: #12283a;
+        --mute: #51697b;
+        --line: #cfdbe3;
+        --acc: #306998;
+        --hi: #f7c92b;
+        --code: #0f2233;
+        --codefg: #e6eef4;
+        --kw: #f7c92b;
+        --str: #8fd6a8;
+        --cm: #7f98aa;
+        --ok: #1d7a4a;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0c1620;
+          --panel: #132434;
+          --ink: #e6eef4;
+          --mute: #9bb0bf;
+          --line: #26405a;
+          --acc: #6fb0e6;
+          --code: #08111a;
+          --ok: #6fd49b;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0c1620;
+        --panel: #132434;
+        --ink: #e6eef4;
+        --mute: #9bb0bf;
+        --line: #26405a;
+        --acc: #6fb0e6;
+        --code: #08111a;
+        --ok: #6fd49b;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          17px/1.6 "Bricolage Grotesque",
+          system-ui,
+          sans-serif;
+      }
+      .wrap {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 24px 18px 60px;
+      }
+      header {
+        padding: 20px 0 26px;
+      }
+      h1 {
+        font-size: clamp(2rem, 6vw, 3.2rem);
+        line-height: 1.05;
+        margin: 0 0 10px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      header p {
+        margin: 0;
+        max-width: 56ch;
+        color: var(--mute);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 230px 1fr;
+        gap: 28px;
+        align-items: start;
+      }
+      nav {
+        position: sticky;
+        top: calc(env(safe-area-inset-top, 0px) + 12px);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      nav button {
+        font: inherit;
+        text-align: left;
+        background: none;
+        border: 0;
+        border-left: 3px solid var(--line);
+        color: var(--mute);
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 0 8px 8px 0;
+      }
+      nav button:hover {
+        color: var(--ink);
+      }
+      nav button[aria-current="true"] {
+        border-left-color: var(--hi);
+        color: var(--ink);
+        background: var(--panel);
+        font-weight: 700;
+      }
+      nav button:focus-visible,
+      .btn:focus-visible,
+      input:focus-visible {
+        outline: 3px solid var(--acc);
+        outline-offset: 2px;
+      }
+      article {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 26px;
+      }
+      article h2 {
+        font-size: 1.9rem;
+        margin: 0 0 8px;
+        line-height: 1.15;
+      }
+      article p {
+        max-width: 62ch;
+        margin: 0.7em 0;
+      }
+      code.i {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.88em;
+        background: var(--bg);
+        padding: 1px 6px;
+        border-radius: 5px;
+      }
+      pre {
+        margin: 16px 0 0;
+        background: var(--code);
+        color: var(--codefg);
+        border-radius: 10px 10px 0 0;
+        padding: 16px 18px;
+        overflow-x: auto;
+        font:
+          400 14.5px/1.65 "JetBrains Mono",
+          monospace;
+      }
+      .k {
+        color: var(--kw);
+        font-weight: 600;
+      }
+      .s {
+        color: var(--str);
+      }
+      .c {
+        color: var(--cm);
+      }
+      .out {
+        background: var(--code);
+        border-top: 1px dashed #36526a;
+        border-radius: 0 0 10px 10px;
+        padding: 12px 18px;
+        font:
+          400 14.5px/1.6 "JetBrains Mono",
+          monospace;
+        color: #bfe7cf;
+        white-space: pre-wrap;
+        min-height: 46px;
+      }
+      .out b {
+        color: var(--cm);
+        font-weight: 400;
+      }
+      .btn {
+        font: inherit;
+        font-weight: 700;
+        background: var(--hi);
+        color: #241c00;
+        border: 0;
+        border-radius: 8px;
+        padding: 8px 16px;
+        cursor: pointer;
+        margin-top: 12px;
+      }
+      .btn.alt {
+        background: none;
+        border: 1.5px solid var(--acc);
+        color: var(--acc);
+      }
+      .note {
+        border-left: 4px solid var(--hi);
+        background: var(--bg);
+        padding: 10px 14px;
+        border-radius: 0 8px 8px 0;
+        margin: 18px 0 0;
+        max-width: 62ch;
+      }
+      .quiz {
+        margin-top: 24px;
+        border-top: 1px solid var(--line);
+        padding-top: 18px;
+      }
+      .quiz h3 {
+        margin: 0 0 6px;
+        font-size: 1.1rem;
+      }
+      .opts {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        max-width: 420px;
+      }
+      .opts button {
+        font:
+          400 15px "JetBrains Mono",
+          monospace;
+        text-align: left;
+        background: var(--bg);
+        color: var(--ink);
+        border: 1.5px solid var(--line);
+        border-radius: 8px;
+        padding: 9px 12px;
+        cursor: pointer;
+      }
+      .opts button.good {
+        border-color: var(--ok);
+        background: color-mix(in srgb, var(--ok) 18%, transparent);
+      }
+      .opts button.bad {
+        border-color: #c9503f;
+      }
+      .fb {
+        margin: 10px 0 0;
+        min-height: 1.5em;
+        font-weight: 700;
+      }
+      .play {
+        margin-top: 22px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .play input {
+        font: inherit;
+        width: 90px;
+        padding: 7px 10px;
+        border: 1.5px solid var(--line);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      .pager {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 26px;
+        gap: 10px;
+      }
+      .tools {
+        position: absolute;
+        right: 18px;
+        top: calc(env(safe-area-inset-top, 0px) + 14px);
+      }
+      @media (max-width: 760px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          position: static;
+          flex-direction: row;
+          overflow-x: auto;
+          padding-bottom: 6px;
+        }
+        nav button {
+          white-space: nowrap;
+          border-left: 0;
+          border-bottom: 3px solid var(--line);
+          border-radius: 0;
+        }
+        nav button[aria-current="true"] {
+          border-bottom-color: var(--hi);
+        }
+        article {
+          padding: 18px;
+        }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .out.flash {
+          animation: fl 0.5s;
+        }
+        @keyframes fl {
+          from {
+            background: #1d4a38;
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Funciones en Python</h1>
+      </header>
+      <div class="layout">
+        <nav id="nav" aria-label="Lecciones"></nav>
+        <article id="lesson" aria-live="polite"></article>
+      </div>
+    </div>
+    <script>
+      var L = [
+        {
+          id: "def",
+          t: "Definir y llamar",
+          p: "Una función es un bloque de código con nombre que puedes reutilizar. Se crea con <code class='i'>def</code>, seguido del nombre, paréntesis y dos puntos. El cuerpo va <b>indentado</b>. Escribir la definición no ejecuta nada: la función corre cuando la <b>llamas</b> con paréntesis.",
+          c: 'def saludar():\n    print("¡Hola, mundo!")\n\nsaludar()\nsaludar()',
+          o: "¡Hola, mundo!\n¡Hola, mundo!",
+          n: "Una función que se llama dos veces se ejecuta dos veces. Eso es reutilizar código.",
+          q: {
+            q: '¿Qué muestra este código?\n\ndef a():\n    print("X")',
+            o: ["X", "Nada", "Un error"],
+            a: 1,
+            e: "Solo se definió la función; nunca se llamó con a().",
+          },
+        },
+        {
+          id: "return",
+          t: "Parámetros y return",
+          p: "Los <b>parámetros</b> son los datos de entrada de la función. <code class='i'>return</code> devuelve un resultado a quien la llamó y termina la función. Sin <code class='i'>return</code>, la función devuelve <code class='i'>None</code>.",
+          c: "def area(base, altura):\n    return base * altura / 2\n\nr = area(6, 4)\nprint(r)",
+          o: "12.0",
+          n: "print muestra algo en pantalla; return entrega un valor para seguir usándolo en el programa.",
+          q: {
+            q: "¿Qué vale x?\n\ndef f(a):\n    a + 1\nx = f(2)",
+            o: ["3", "None", "2"],
+            a: 1,
+            e: "f calcula a + 1 pero no lo devuelve, así que retorna None.",
+          },
+          play: "area",
+        },
+        {
+          id: "defecto",
+          t: "Valores por defecto",
+          p: "Un parámetro puede tener un valor por defecto. Si quien llama no lo da, se usa el predeterminado. Los parámetros con valor por defecto van <b>después</b> de los obligatorios.",
+          c: 'def saludar(nombre, saludo="Hola"):\n    return saludo + ", " + nombre\n\nprint(saludar("Ana"))\nprint(saludar("Luis", "Buenas"))',
+          o: "Hola, Ana\nBuenas, Luis",
+          n: "",
+          q: {
+            q: "¿Qué devuelve f()?\n\ndef f(x=5):\n    return x * 2",
+            o: ["10", "5", "Error"],
+            a: 0,
+            e: "Sin argumento, x vale 5, y 5 * 2 = 10.",
+          },
+        },
+        {
+          id: "nombre",
+          t: "Argumentos con nombre",
+          p: "Al llamar puedes indicar el nombre de cada parámetro. Así el orden deja de importar y el código se lee mejor, sobre todo con muchos parámetros.",
+          c: 'def crear_usuario(nombre, edad, ciudad):\n    return nombre + " (" + str(edad) + ") - " + ciudad\n\nprint(crear_usuario("Marta", 30, "Monterrey"))\nprint(crear_usuario(ciudad="San Nicólas", nombre="Raúl", edad=22))',
+          o: "Marta (30) - Monterrey\nRaúl (22) - San Nicólas",
+          n: "Los argumentos posicionales siempre van antes que los de nombre en una llamada.",
+          q: {
+            q: "¿Cuál llamada es válida?",
+            o: ["f(a=1, 2)", "f(1, b=2)", "f(a=1, a=2)"],
+            a: 1,
+            e: "Primero los posicionales, luego los de nombre.",
+          },
+        },
+        {
+          id: "scope",
+          t: "Ámbito de las variables",
+          p: "Una variable creada dentro de una función es <b>local</b>: solo existe mientras la función corre. Las variables de fuera se pueden leer, pero asignarlas dentro crea una variable local nueva.",
+          c: 'x = 10\n\ndef cambiar():\n    x = 99\n    print("dentro:", x)\n\ncambiar()\nprint("fuera:", x)',
+          o: "dentro: 99\nfuera: 10",
+          n: "Para evitar efectos ocultos, pasa datos con parámetros y devuélvelos con return en lugar de usar <code class='i'>global</code>.",
+          q: {
+            q: "¿Qué pasa al hacer print(y) fuera?\n\ndef f():\n    y = 1\nf()\nprint(y)",
+            o: ["1", "None", "NameError"],
+            a: 2,
+            e: "y es local a f; fuera de ella no existe.",
+          },
+        },
+      ];
+      var cur = 0,
+        nav = document.getElementById("nav"),
+        box = document.getElementById("lesson");
+      function esc(s) {
+        return s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      }
+      function hl(s) {
+        s = esc(s);
+        return s
+          .replace(/("[^"]*")/g, '<span class="s">$1</span>')
+          .replace(
+            /\b(def|return|lambda|for|in|global)\b/g,
+            '<span class="k">$1</span>',
+          );
+      }
+      function build() {
+        nav.innerHTML = "";
+        L.forEach(function (l, i) {
+          var b = document.createElement("button");
+          b.textContent = i + 1 + ". " + l.t;
+          b.onclick = function () {
+            go(i, true);
+          };
+          b.setAttribute("aria-current", i === cur);
+          nav.appendChild(b);
+        });
+      }
+      function go(i, push) {
+        cur = i;
+        try {
+          if (push) history.replaceState(null, "", "#" + L[i].id);
+        } catch (e) {}
+        build();
+        render();
+        window.scrollTo(0, 0);
+      }
+      function render() {
+        var l = L[cur],
+          h =
+            "<h2>" +
+            l.t +
+            "</h2><p>" +
+            l.p +
+            "</p><pre><code>" +
+            hl(l.c) +
+            "</code></pre><div class='out' id='out'><b># pulsa «Ejecutar» para ver la salida</b></div><button class='btn' id='run'>Ejecutar</button>";
+        if (l.n) h += "<div class='note'>" + l.n + "</div>";
+        if (l.play)
+          h +=
+            "<div class='play'><span>Prueba con tus valores:</span><input id='pa' type='number' value='6' aria-label='base'><input id='pb' type='number' value='4' aria-label='altura'><button class='btn alt' id='pr' style='margin:0'>Calcular área(base, altura)</button><span id='pres' style='font-family:JetBrains Mono,monospace'></span></div>";
+        h +=
+          "<div class='quiz'><h3>Comprueba lo aprendido</h3><pre style='border-radius:10px;margin:8px 0'>" +
+          esc(l.q.q) +
+          "</pre><div class='opts' id='opts'></div><p class='fb' id='fb'></p></div>";
+        h +=
+          "<div class='pager'><button class='btn alt' id='prev' " +
+          (cur ? "" : "disabled style='opacity:.4'") +
+          ">Anterior</button><button class='btn' id='next' " +
+          (cur < L.length - 1 ? "" : "disabled style='opacity:.4'") +
+          ">Siguiente</button></div>";
+        box.innerHTML = h;
+        document.getElementById("run").onclick = function () {
+          var o = document.getElementById("out");
+          o.textContent = l.o;
+          o.classList.remove("flash");
+          void o.offsetWidth;
+          o.classList.add("flash");
+        };
+        var q = l.q,
+          od = document.getElementById("opts");
+        q.o.forEach(function (t, k) {
+          var b = document.createElement("button");
+          b.textContent = t;
+          b.onclick = function () {
+            var f = document.getElementById("fb");
+            [].forEach.call(od.children, function (x) {
+              x.classList.remove("good", "bad");
+            });
+            if (k === q.a) {
+              b.classList.add("good");
+              f.style.color = "var(--ok)";
+              f.textContent = "Correcto. " + q.e;
+            } else {
+              b.classList.add("bad");
+              f.style.color = "#c9503f";
+              f.textContent = "Casi. Inténtalo otra vez.";
+            }
+          };
+          od.appendChild(b);
+        });
+        if (l.play)
+          document.getElementById("pr").onclick = function () {
+            var a = parseFloat(document.getElementById("pa").value),
+              b = parseFloat(document.getElementById("pb").value);
+            document.getElementById("pres").textContent =
+              isNaN(a) || isNaN(b) ? "Escribe dos números" : "→ " + (a * b) / 2;
+          };
+        document.getElementById("prev").onclick = function () {
+          if (cur > 0) go(cur - 1, true);
+        };
+        document.getElementById("next").onclick = function () {
+          if (cur < L.length - 1) go(cur + 1, true);
+        };
+      }
+      var h0 = (location.hash || "").slice(1);
+      L.forEach(function (l, i) {
+        if (l.id === h0) cur = i;
+      });
+      build();
+      render();
+    </script>
+  </body>
+</html>
